@@ -5,7 +5,7 @@ import os
 
 MAJOR = 0
 MINOR = 1
-MICRO = 1
+MICRO = 2
 VERSION = '{}.{}.{}'.format(MAJOR, MINOR, MICRO)
 
 ISRELEASED = False
@@ -44,7 +44,7 @@ KEYWORDS = "text vectors"
 AUTHOR = "Chapman Siu"
 AUTHOR_EMAIL = "chapm0n.siu@gmail.com"
 URL = 'https://github.com/chappers/text-vectors'
-INSTALL_REQUIRES = ['m2r', 'scikit-learn', 'numpy', 'keras', 'nose', 'future'] # not in setup on purpose.
+INSTALL_REQUIRES = ['m2r', 'scikit-learn', 'numpy', 'nose', 'future'] # not in setup on purpose.
 
 setup(
     name = NAME,
