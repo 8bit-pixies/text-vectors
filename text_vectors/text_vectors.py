@@ -156,8 +156,11 @@ class TextVec(TransformerMixin, BaseEstimator):
     
     def download_weights(self):
         try:
-            from keras.utils import get_file as keras_get_file
-            keras_path = keras_get_file('glove.6B.zip', WEIGHTS_PATH, extract=True, cache_subdir='models')
+            cache_dir = os.path.join(os.path.expanduser('~'), '.keras')
+            fpath = os.path.join(cache_dir, 'models', 'glove.6B.zip')
+            if not os.path.isfile(fpath):
+                from keras.utils import get_file as keras_get_file
+                keras_path = keras_get_file('glove.6B.zip', WEIGHTS_PATH, extract=True, cache_subdir='models')
         except:
             pass
         if str(self.dimension).startswith('50'):
