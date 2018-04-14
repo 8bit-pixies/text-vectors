@@ -135,6 +135,10 @@ def get_file(fname,
 class TextVec(TransformerMixin, BaseEstimator):
     """
     This is a pipeline-able object which uses GLOVE. It does nothing else
+    
+    Supported Dimensions: 50, 100, 200, 300 
+    glove_download: path to `glove.6B.zip`, this is supported only if keras is installed
+    tfidf: are vectors to be trained via TFIDF in conjunction with GloVe?
     """
     
     @staticmethod
@@ -144,11 +148,11 @@ class TextVec(TransformerMixin, BaseEstimator):
         except:
             return x
     
-    def __init__(self, w2v=None, dimension='50d', glove_download=WEIGHTS_PATH_50D, method='tfidf'):
+    def __init__(self, w2v=None, dimension='50d', glove_download=WEIGHTS_PATH, tfidf=False):
         self.glove_download = glove_download
         self.dimension = dimension
         self.w2v = w2v
-        self.method = method
+        self.tfidf = tfidf
     
     def download_weights(self):
         try:
@@ -158,9 +162,11 @@ class TextVec(TransformerMixin, BaseEstimator):
             pass
         if str(self.dimension).startswith('50'):
             weights_path = get_file('glove.6B.50d.txt', WEIGHTS_PATH_50D, cache_subdir='models')
-        elif str(self.dimension).startswith('20'):
+        elif str(self.dimension).startswith('100'):
+            weights_path = get_file('glove.6B.100d.txt', WEIGHTS_PATH_100D, cache_subdir='models')
+        elif str(self.dimension).startswith('200'):
             weights_path = get_file('glove.6B.200d.txt', WEIGHTS_PATH_200D, cache_subdir='models')
-        elif str(self.dimension).startswith('30'):
+        elif str(self.dimension).startswith('300'):
             # this won't work unless downloaded via keras_get_file
             weights_path = get_file('glove.6B.300d.txt', WEIGHTS_PATH_300D, cache_subdir='models')
         else:
@@ -176,7 +182,7 @@ class TextVec(TransformerMixin, BaseEstimator):
         if self.w2v is None:
             self.download_weights()
         
-        if self.method == 'tfidf':
+        if self.tfidf:
             tfidf = TfidfVectorizer(analyzer=lambda x: x)
             tfidf.fit(X)
             max_idf = max(tfidf.idf_)
@@ -187,7 +193,7 @@ class TextVec(TransformerMixin, BaseEstimator):
         return self
     
     def transform(self, X):
-        if self.method == 'tfidf':
+        if self.tfidf:
             return np.array([
                 np.mean([self.w2v[w] * self.word2weight[w]
                          for w in words if w in self.w2v] or
