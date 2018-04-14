@@ -131,7 +131,6 @@ def get_file(fname,
 
 
 
-
 class TextVec(TransformerMixin, BaseEstimator):
     """
     This is a pipeline-able object which uses GLOVE. It does nothing else
@@ -195,6 +194,10 @@ class TextVec(TransformerMixin, BaseEstimator):
         
         return self
     
+    def gensim_transform(self, words):        
+        return np.mean([self.w2v.get_vector(w) for w in words if w in self.w2v.vocab.keys()]
+                        or [np.zeros(self.dim)], axis=0)
+    
     def transform(self, X):
         if self.tfidf:
             return np.array([
@@ -203,8 +206,9 @@ class TextVec(TransformerMixin, BaseEstimator):
                         [np.zeros(self.dim)], axis=0)
                 for words in X
             ])
-        else:
-            return np.array([
+        if 'gensim' in str(type(self.w2v)):
+            return np.array([self.gensim_transform(words) for words in X])
+        return np.array([
                 np.mean([self.w2v[w] for w in words if w in self.w2v]
                         or [np.zeros(self.dim)], axis=0)
                 for words in X
