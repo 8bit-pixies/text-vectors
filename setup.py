@@ -4,8 +4,8 @@ from setuptools import setup, find_packages
 import os
 
 MAJOR = 0
-MINOR = 1
-MICRO = 2
+MINOR = 2
+MICRO = 0
 VERSION = '{}.{}.{}'.format(MAJOR, MINOR, MICRO)
 
 ISRELEASED = False
