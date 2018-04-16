@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 import os
 
 MAJOR = 0
-MINOR = 2
+MINOR = 3
 MICRO = 0
 VERSION = '{}.{}.{}'.format(MAJOR, MINOR, MICRO)
 
@@ -44,7 +44,7 @@ KEYWORDS = "text vectors"
 AUTHOR = "Chapman Siu"
 AUTHOR_EMAIL = "chapm0n.siu@gmail.com"
 URL = 'https://github.com/chappers/text-vectors'
-INSTALL_REQUIRES = ['m2r', 'scikit-learn', 'numpy', 'nose', 'future'] # not in setup on purpose.
+INSTALL_REQUIRES = ['scikit-learn', 'numpy', 'nose', 'gensim', 'future'] # not in setup on purpose.
 
 setup(
     name = NAME,
